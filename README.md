@@ -1,6 +1,6 @@
 # Claude Ruby
 
-[![Gem Version](https://badge.fury.io/rb/claude-ruby.svg)](https://badge.fury.io/rb/claude-ruby) [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Maintainability](https://api.codeclimate.com/v1/badges/08c7e7b58e9fbe7156eb/maintainability)](https://codeclimate.com/github/webven/claude-ruby/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/08c7e7b58e9fbe7156eb/test_coverage)](https://codeclimate.com/github/webven/claude-ruby/test_coverage) [![CI](https://github.com/webven/claude-ruby/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/webven/claude-ruby/actions/workflows/ci.yml)
+[![Gem Version](https://badge.fury.io/rb/claude-ruby.svg)](https://badge.fury.io/rb/claude-ruby) [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Maintainability](https://api.codeclimate.com/v1/badges/08c7e7b58e9fbe7156eb/maintainability)](https://codeclimate.com/github/webventures/claude-ruby/maintainability) [![CI](https://github.com/webventures/claude-ruby/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/webventures/claude-ruby/actions/workflows/ci.yml)
 
 `claude-ruby` gem is an unofficial ruby SDK for interacting with the Anthropic API, for generating and streaming messages through Claude
 
@@ -125,7 +125,7 @@ To install this gem onto your local machine, run `bundle exec rake install`.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/webven/claude-ruby.
+Bug reports and pull requests are welcome on GitHub at https://github.com/webventures/claude-ruby.
 
 ## License
 

@@ -10,13 +10,13 @@ Gem::Specification.new do |spec|
 
   spec.summary     = 'A Ruby SDK for the Anthropic Claude API'
   spec.description = 'Unofficial ruby SDK for interacting with the Anthropic API, for generating and streaming messages through Claude.'
-  spec.homepage = "https://github.com/webven/claude-ruby.git"
+  spec.homepage = "https://github.com/webventures/claude-ruby.git"
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 2.6.0"
+  spec.required_ruby_version = ">= 3.0.0"
 
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "https://github.com/webven/claude-ruby.git"
-  spec.metadata["changelog_uri"] = "https://github.com/webven/claude-ruby/blob/main/CHANGELOG.md"
+  spec.metadata["source_code_uri"] = "https://github.com/webventures/claude-ruby.git"
+  spec.metadata["changelog_uri"] = "https://github.com/webventures/claude-ruby/blob/main/CHANGELOG.md"
 
   spec.files = Dir.chdir(__dir__) do
     `git ls-files -z`.split("\x0").reject do |f|
