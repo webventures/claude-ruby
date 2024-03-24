@@ -1,4 +1,4 @@
-require 'rest-client'
+require 'httparty'
 require 'json'
 
 module Claude
@@ -28,7 +28,7 @@ module Claude
         top_k: params[:top_k],
       }.compact
 
-      request_api(url, data)
+      post_api(url, data)
     end
 
     def headers
@@ -41,13 +41,12 @@ module Claude
 
     private
 
-    def request_api(url, data, method = :post)
-      begin
-        response = RestClient::Request.execute(method: method, url: url, payload: data.to_json, headers: headers)
+    def post_api(url, data)
+      response = HTTParty.post(url, body: data.to_json, headers: headers)
+      if response && response['type'] == 'error'
+        raise StandardError.new("#{response['error']['type']}: #{response['error']['message']}")
+      else
         JSON.parse(response.body)
-      rescue RestClient::ExceptionWithResponse => e
-        error_msg = JSON.parse(e.response.body)['error']['message']
-        raise RestClient::ExceptionWithResponse.new("#{e.message}: #{error_msg} (#{e.http_code})"), nil, e.backtrace
       end
     end
 

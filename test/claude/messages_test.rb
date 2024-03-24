@@ -26,21 +26,21 @@ class TestClaudeMessagesIntegration < Minitest::Test
   end
 
   def test_messages_returns_valid_response_when_prompt_is_empty
-    assert_raises(RestClient::ExceptionWithResponse) do
+    assert_raises(StandardError) do
       @client.messages([{ role: "user", content: ""}])
     end
   end
 
   def test_messages_returns_error_with_invalid_model
     model = "INVALID"
-    assert_raises(RestClient::ExceptionWithResponse) do
+    assert_raises(StandardError) do
       @client.messages([{ role: "user", content: "What's the Greek name for Sun?"}], {model: model})
     end
   end
 
   def test_messages_returns_error_with_invalid_max_tokens
     max_tokens = -10
-    assert_raises(RestClient::ExceptionWithResponse) do
+    assert_raises(StandardError) do
       @client.messages([{ role: "user", content: "What's the Greek name for Sun?"}], {max_tokens: max_tokens})
     end
   end
