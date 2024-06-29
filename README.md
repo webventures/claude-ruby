@@ -60,32 +60,51 @@ It requires an array of messages where each message is a hash with two propertie
 Simple example with a single user message:
 
 ```ruby
+messages = claude_client.user_message("Who was the first team to win the rugby world cup?")
+response = claude_client.messages(messages)
+```
+
+The response contains a bunch of metadata and the model's message response.
+To extract the message text you can use:
+
+```ruby
+claude_client.parse_response(response)
+```
+
+Or parse the response yourself:
+
+```ruby
+response['content'][0]['text']
+```
+
+```claude_client.user_message``` is just for simple user messages. For more complex messages you can specify the payload in detail:
+
+```ruby
 messages = [
   {
     role: "user",
-    content: "Who was the first team to win the rugby world cup?"
+    content: "In which year was the first ever rugby world cup? (A) 1983 (B) 1987 (C) 1991"
+  },
+  {
+    role: "assistant",
+    content: "The best answer is ("
   }
 ]
 
 response = claude_client.messages(messages)
 ```
 
-The response contains a bunch of metadata and the model's message response.
-To extract the message text you can you code like this:
-
-```ruby
-response['content'][0]['text']
-```
 
 You can continue the conversation by calling the `messages` method again with an expanded messages array:
 
 ```ruby
 
-messages << {role: "assistant", content: "New Zealand won the first Rugby World Cup in 1987"}
-messages << {role: "user", content: "Who came third and fourth in that competition?"}
+messages = [{ role: "user", content: "Who was the first team to win the rugby world cup?" }]
+messages << { role: "assistant", content: "New Zealand won the first Rugby World Cup in 1987" }
+messages << { role: "user", content: "Who came third and fourth in that competition?" }
 
 response = claude_client.messages(messages)
-puts response['content'][0]['text'] # This will give you the updated message
+puts claude_client.parse_response(response) # This will give you the updated message
 ```
 
 Example with a more sophisticated message structure:
@@ -108,7 +127,46 @@ messages = [
   },
 ]
 
-response = claude_client.messages(messages, {system: system})
+response = claude_client.messages(messages, { system: system })
+```
+
+## Vision
+
+It's possible to pass an image to the Anthropic API and have Claude describe the image for you.
+Here's an example how to do that using claude-ruby gem:
+
+```ruby
+require 'httparty'
+require 'base64'
+
+def fetch_and_encode_image(url)
+  response = HTTParty.get(url)
+  Base64.strict_encode64(response.body)
+end
+
+image_url = "https://images.unsplash.com/photo-1719630668118-fb27d922b165?ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&fm=jpg&fit=crop&w=1080&q=80&fit=max"
+messages = [
+    {
+        "role": "user",
+        "content": [
+            {
+                "type": "image",
+                "source": {
+                    "type": "base64",
+                    "media_type": "image/jpeg",
+                    "data": fetch_and_encode_image(image_url),
+                },
+            },
+            {
+                "type": "text",
+                "text": "Describe this image."
+            }
+        ],
+    }
+]
+
+response = claude_client.messages(messages)
+image_description = claude_client.parse_response(response)
 ```
 
 For further details of the API visit https://docs.anthropic.com/claude/reference/messages_post

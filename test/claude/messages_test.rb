@@ -44,4 +44,16 @@ class TestClaudeMessagesIntegration < Minitest::Test
       @client.messages([{ role: "user", content: "What's the Greek name for Sun?"}], {max_tokens: max_tokens})
     end
   end
+
+  def test_user_message
+    user_message = "What's the Greek name for Sun?"
+    assert @client.user_message(user_message) == [{ role: "user", content: "What's the Greek name for Sun?" }]
+  end
+
+  def test_parse_response
+    response = @client.messages([{ role: "user", content: "What's the Greek name for Sun?" }])
+    assert @client.parse_response(response).length > 0
+    assert @client.parse_response(response) == response["content"][0]["text"]
+  end
+
 end
