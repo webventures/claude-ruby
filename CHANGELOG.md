@@ -1,3 +1,6 @@
+## [0.3.1] - 2024-06-29
+- Updated documentation
+ 
 ## [0.3.0] - 2024-06-29
 
 - Added constants for the main Claude models

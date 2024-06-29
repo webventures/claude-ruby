@@ -130,6 +130,60 @@ messages = [
 response = claude_client.messages(messages, { system: system })
 ```
 
+## Models
+
+If you don't specify a model, then the gem will use the latest version of Claude Sonnet by default, which is currently ```claude-3-5-sonnet-20240620```
+
+You can use a different model by specifying it as a parameter in the messages call:
+
+```ruby
+response = claude_client.messages(messages, { model: 'claude-3-haiku-20240307' })
+````
+
+There are some constants defined so you can choose an appropriate model for your use-case and not have to worry about updating it when new Claude models are released:
+
+```ruby
+Claude::Client::MODEL_CLAUDE_OPUS_LATEST
+Claude::Client::MODEL_CLAUDE_SONNET_LATEST
+Claude::Client::MODEL_CLAUDE_HAIKU_LATEST
+
+Claude::Client::MODEL_CLAUDE_FASTEST
+Claude::Client::MODEL_CLAUDE_CHEAPEST
+Claude::Client::MODEL_CLAUDE_BALANCED
+Claude::Client::MODEL_CLAUDE_SMARTEST
+````
+
+Example usage:
+
+```ruby
+response = claude_client.messages(messages, { model: Claude::Client::MODEL_CLAUDE_CHEAPEST })
+````
+
+## Parameters
+
+You can pass in any of the following parameters, which will be included in the Anthropic API call: 
+
+```ruby
+model
+system
+max_tokens
+metadata
+stop_sequences
+stream
+temperature
+top_p
+top_k
+````
+
+Example:
+
+```ruby
+response = claude_client.messages(messages, 
+                                  { model: Claude::Client::MODEL_CLAUDE_SMARTEST,
+                                    max_tokens: 500,
+                                    temperature: 0.1 })
+````
+
 ## Vision
 
 It's possible to pass an image to the Anthropic API and have Claude describe the image for you.
