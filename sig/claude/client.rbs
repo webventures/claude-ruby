@@ -1,0 +1,7 @@
+module Claude
+  class Client
+    @api_key: String
+    @endpoint: String
+    @timeout: Integer
+  end
+end

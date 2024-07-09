@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email = ["webven@mailgab.com"]
 
   spec.summary     = 'A Ruby SDK for the Anthropic Claude API'
-  spec.description = 'Unofficial ruby SDK for interacting with the Anthropic API, for generating and streaming messages through Claude.'
+  spec.description = 'Ruby SDK for interacting with the Anthropic API, for generating and streaming messages through Claude AI.'
   spec.homepage = "https://github.com/webventures/claude-ruby.git"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 3.0.0"

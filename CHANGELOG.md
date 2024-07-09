@@ -1,3 +1,8 @@
+## [0.4.0] - 2024-07-09
+- Refactored model constants into a separate Model module
+- Support custom endpoints
+- Allow timeout to be specified
+
 ## [0.3.1] - 2024-06-29
 - Updated documentation
  

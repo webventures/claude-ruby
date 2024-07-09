@@ -143,21 +143,42 @@ response = claude_client.messages(messages, { model: 'claude-3-haiku-20240307' }
 There are some constants defined so you can choose an appropriate model for your use-case and not have to worry about updating it when new Claude models are released:
 
 ```ruby
-Claude::Client::MODEL_CLAUDE_OPUS_LATEST
-Claude::Client::MODEL_CLAUDE_SONNET_LATEST
-Claude::Client::MODEL_CLAUDE_HAIKU_LATEST
+Claude::Model::CLAUDE_OPUS_LATEST
+Claude::Model::CLAUDE_SONNET_LATEST
+Claude::Model::CLAUDE_HAIKU_LATEST
 
-Claude::Client::MODEL_CLAUDE_FASTEST
-Claude::Client::MODEL_CLAUDE_CHEAPEST
-Claude::Client::MODEL_CLAUDE_BALANCED
-Claude::Client::MODEL_CLAUDE_SMARTEST
+Claude::Model::CLAUDE_FASTEST
+Claude::Model::CLAUDE_CHEAPEST
+Claude::Model::CLAUDE_BALANCED
+Claude::Model::CLAUDE_SMARTEST
 ````
 
 Example usage:
 
 ```ruby
-response = claude_client.messages(messages, { model: Claude::Client::MODEL_CLAUDE_CHEAPEST })
+response = claude_client.messages(messages, { model: Claude::Model::CLAUDE_CHEAPEST })
 ````
+
+## Timeout
+
+You can optionally set a timeout (integer) which will determine the maximum number of seconds to wait for the API call to complete.
+
+There are two ways to do this:
+
+1. Set a default timeout when instantiating the claude_client \
+This timeout value will be used for all API calls unless overridden.
+
+```ruby
+claude_client = Claude::Client.new(api_key, timeout: 10)
+```
+
+2. Pass in a timeout value as a parameter when calling the messages method. \
+This timeout value will be used only for that specific messages request. 
+
+```ruby
+response = claude_client.messages(messages, { timeout: 10 })
+```
+
 
 ## Parameters
 
@@ -173,16 +194,29 @@ stream
 temperature
 top_p
 top_k
+
+timeout (*)
 ````
+(*) timeout is used for the HTTP request but not passed with the API data
 
 Example:
 
 ```ruby
 response = claude_client.messages(messages, 
-                                  { model: Claude::Client::MODEL_CLAUDE_SMARTEST,
+                                  { model: Claude::Model::CLAUDE_SMARTEST,
                                     max_tokens: 500,
                                     temperature: 0.1 })
 ````
+
+## Custom endpoint
+
+By default claude-ruby will use the latest official Anthropic API endpoint at the time that the gem version is released.
+
+You can optionally optionally override this - e.g. for testing, or for using a beta endpoint.
+
+```ruby
+claude_client = Claude::Client.new(api_key, endpoint: 'you-custom-endpoint')
+```
 
 ## Vision
 

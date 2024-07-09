@@ -2,36 +2,53 @@ require 'httparty'
 require 'json'
 
 module Claude
+  module Model
+    CLAUDE_3_OPUS_20240229 = 'claude-3-opus-20240229'
+
+    CLAUDE_3_SONNET_20240229 = 'claude-3-sonnet-20240229'
+    CLAUDE_3_5_SONNET_20240620 = 'claude-3-5-sonnet-20240620'
+
+    CLAUDE_3_HAIKU_20240307 = 'claude-3-haiku-20240307'
+
+    CLAUDE_OPUS_LATEST = CLAUDE_3_OPUS_20240229
+    CLAUDE_SONNET_LATEST = CLAUDE_3_5_SONNET_20240620
+    CLAUDE_HAIKU_LATEST = CLAUDE_3_HAIKU_20240307
+
+    CLAUDE_FASTEST = CLAUDE_HAIKU_LATEST
+    CLAUDE_CHEAPEST = CLAUDE_HAIKU_LATEST
+    CLAUDE_BALANCED = CLAUDE_SONNET_LATEST
+    CLAUDE_SMARTEST = CLAUDE_3_5_SONNET_20240620
+
+    CLAUDE_DEFAULT = CLAUDE_SONNET_LATEST
+  end
+
   class Client
-    MODEL_CLAUDE_3_OPUS_20240229 = 'claude-3-opus-20240229'
 
-    MODEL_CLAUDE_3_SONNET_20240229 = 'claude-3-sonnet-20240229'
-    MODEL_CLAUDE_3_5_SONNET_20240620 = 'claude-3-5-sonnet-20240620'
-
-    MODEL_CLAUDE_3_HAIKU_20240307 = 'claude-3-haiku-20240307'
-
-    MODEL_CLAUDE_OPUS_LATEST = MODEL_CLAUDE_3_OPUS_20240229
-    MODEL_CLAUDE_SONNET_LATEST = MODEL_CLAUDE_3_5_SONNET_20240620
-    MODEL_CLAUDE_HAIKU_LATEST = MODEL_CLAUDE_3_HAIKU_20240307
-
-    MODEL_CLAUDE_FASTEST = MODEL_CLAUDE_HAIKU_LATEST
-    MODEL_CLAUDE_CHEAPEST = MODEL_CLAUDE_HAIKU_LATEST
-    MODEL_CLAUDE_BALANCED = MODEL_CLAUDE_SONNET_LATEST
-    MODEL_CLAUDE_SMARTEST = MODEL_CLAUDE_3_5_SONNET_20240620
-
-    MODEL_CLAUDE_DEFAULT = MODEL_CLAUDE_SONNET_LATEST
-
-    def initialize(api_key)
+    def initialize(api_key, endpoint: nil, timeout: 60)
       @api_key = api_key
-      @endpoint = 'https://api.anthropic.com/v1'
+      @endpoint = endpoint || anthropic_endpoint
+      @timeout = timeout
+
+      raise(ArgumentError, "api_key is required") if api_key.nil?
+    end
+
+    def version
+      'v1'
+    end
+
+    def anthropic_endpoint
+      "https://api.anthropic.com/#{version}"
+    end
+
+    def messages_endpoint
+      "#{anthropic_endpoint}/messages"
     end
 
     def messages(messages, params = {})
-      model = params[:model] || MODEL_CLAUDE_DEFAULT
+      model = params[:model] || Model::CLAUDE_DEFAULT
       max_tokens = params[:max_tokens] || 4096
       system = params[:system] || "You are a helpful assistant."
-
-      url = "#{@endpoint}/messages"
+      timeout = params[:timeout] || @timeout
 
       data = {
         model: model,
@@ -46,7 +63,7 @@ module Claude
         top_k: params[:top_k],
       }.compact
 
-      post_api(url, data)
+      post_api(messages_endpoint, data, timeout)
     end
 
     def headers
@@ -70,16 +87,30 @@ module Claude
       response['content'][0]['text']
     end
 
+    # for backwards compatibility with version 0.3.1
+    def self.const_missing(const_name)
+      if const_name.to_s.match(/^MODEL_(CLAUDE_.+)$/)
+        new_const_name = $1
+        if Claude::Model.constants.include?(new_const_name.to_sym)
+          warn "[DEPRECATION] `#{const_name}` is deprecated. Please use `Claude::Model::#{new_const_name}` instead."
+          Claude::Model.const_get(new_const_name)
+        else
+          super
+        end
+      else
+        super
+      end
+    end
+
     private
 
-    def post_api(url, data)
-      response = HTTParty.post(url, body: data.to_json, headers: headers)
+    def post_api(url, data, timeout)
+      response = HTTParty.post(url, body: data.to_json, headers: headers, timeout: timeout)
       if response && response['type'] == 'error'
         raise StandardError.new("#{response['error']['type']}: #{response['error']['message']}")
       else
         JSON.parse(response.body)
       end
     end
-
   end
 end
