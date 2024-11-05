@@ -215,7 +215,7 @@ By default claude-ruby will use the latest official Anthropic API endpoint at th
 You can optionally optionally override this - e.g. for testing, or for using a beta endpoint.
 
 ```ruby
-claude_client = Claude::Client.new(api_key, endpoint: 'you-custom-endpoint')
+claude_client = Claude::Client.new(api_key, endpoint: 'your-custom-endpoint')
 ```
 
 ## Vision
