@@ -1,3 +1,6 @@
+## [0.4.1] - 2024-11-06
+- Added the latest Claude models
+- 
 ## [0.4.0] - 2024-07-09
 - Refactored model constants into a separate Model module
 - Support custom endpoints

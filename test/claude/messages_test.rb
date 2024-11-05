@@ -15,7 +15,7 @@ class TestClaudeMessagesIntegration < Minitest::Test
   
   def test_messages_with_extra_config
     extra_config = {
-      model: "claude-2.1",
+      model: Claude::Model::CLAUDE_CHEAPEST,
       max_tokens: 100,
       temperature: 0.5,
     }
