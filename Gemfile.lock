@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    claude-ruby (0.4.1)
+    claude-ruby (0.4.2)
       httparty
 
 GEM

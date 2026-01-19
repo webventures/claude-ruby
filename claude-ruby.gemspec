@@ -6,7 +6,7 @@ Gem::Specification.new do |spec|
   spec.name = "claude-ruby"
   spec.version = Claude::Ruby::VERSION
   spec.authors = ["Web Ventures Ltd"]
-  spec.email = ["webven@mailgab.com"]
+  spec.email = ["gems@dev.webven.nz"]
 
   spec.summary     = 'A Ruby SDK for the Anthropic Claude API'
   spec.description = 'Ruby SDK for interacting with the Anthropic API, for generating and streaming messages through Claude AI.'
@@ -17,6 +17,17 @@ Gem::Specification.new do |spec|
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/webventures/claude-ruby.git"
   spec.metadata["changelog_uri"] = "https://github.com/webventures/claude-ruby/blob/main/CHANGELOG.md"
+
+  spec.post_install_message = <<~MSG
+    ======================================================================
+    DEPRECATION NOTICE: The 'claude-ruby' gem is deprecated.
+
+    Anthropic now provides an official Ruby SDK. Please migrate to:
+      gem install anthropic-sdk-ruby
+
+    More info: https://github.com/anthropics/anthropic-sdk-ruby
+    ======================================================================
+  MSG
 
   spec.files = Dir.chdir(__dir__) do
     `git ls-files -z`.split("\x0").reject do |f|

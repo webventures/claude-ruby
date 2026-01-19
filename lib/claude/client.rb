@@ -1,6 +1,12 @@
 require 'httparty'
 require 'json'
 
+warn <<~DEPRECATION
+  [DEPRECATION WARNING] The 'claude-ruby' gem is deprecated and no longer maintained.
+  Please switch to the official Anthropic Ruby SDK: gem install anthropic-sdk-ruby
+  More info: https://github.com/anthropics/anthropic-sdk-ruby
+DEPRECATION
+
 module Claude
   module Model
     CLAUDE_3_OPUS_20240229 = 'claude-3-opus-20240229'
@@ -19,7 +25,7 @@ module Claude
     CLAUDE_FASTEST = CLAUDE_HAIKU_LATEST
     CLAUDE_CHEAPEST = CLAUDE_3_HAIKU_20240307
     CLAUDE_BALANCED = CLAUDE_SONNET_LATEST
-    CLAUDE_SMARTEST = CLAUDE_3_5_SONNET_20240620
+    CLAUDE_SMARTEST = CLAUDE_3_5_SONNET_20241022
 
     CLAUDE_DEFAULT = CLAUDE_BALANCED
   end

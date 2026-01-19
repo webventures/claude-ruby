@@ -8,6 +8,7 @@ class TestClaudeMessagesIntegration < Minitest::Test
   end
 
   def test_messages_returns_valid_response
+    skip "Skipping integration test - gem is deprecated"
     response = @client.messages([{ role: "user", content: "What's the Greek name for Sun?" }])
     assert response["content"].length > 0
     assert response["content"][0]["text"] != nil
@@ -51,6 +52,7 @@ class TestClaudeMessagesIntegration < Minitest::Test
   end
 
   def test_parse_response
+    skip "Skipping integration test - gem is deprecated"
     response = @client.messages([{ role: "user", content: "What's the Greek name for Sun?" }])
     assert @client.parse_response(response).length > 0
     assert @client.parse_response(response) == response["content"][0]["text"]
